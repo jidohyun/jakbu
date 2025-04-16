@@ -1,14 +1,19 @@
 import type React from "react"
 import "@/app/globals.css"
+import './globals.css'
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "Jakbu - 설문조사",
   description: "간단한 설문조사 서비스",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: '/jakbu.png',
+  }
 }
 
 export default function RootLayout({
@@ -25,10 +30,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
 }
 
-
-import './globals.css'
