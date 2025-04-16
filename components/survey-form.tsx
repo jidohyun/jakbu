@@ -258,6 +258,20 @@ export default function SurveyForm() {
   const saveResultAsImage = async () => {
     if (!resultCardRef.current) return
 
+    // 브라우저 호환성 검사
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg');
+    const isFirefox = userAgent.includes('firefox');
+    const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome') && !userAgent.includes('edg');
+    const isEdge = userAgent.includes('edg');
+
+    const isCompatibleBrowser = isChrome || isFirefox || isSafari || isEdge;
+
+    if (!isCompatibleBrowser) {
+      alert("호환되지 않는 브라우저입니다. \n이미지 저장은 Chrome, Firefox, Safari, Edge 브라우저에서 지원됩니다.");
+      return; // 호환되지 않으면 함수 종료
+    }
+
     try {
       // 결과 카드를 이미지로 변환
       const canvas = await html2canvas(resultCardRef.current, {
