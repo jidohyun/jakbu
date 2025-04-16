@@ -275,7 +275,9 @@ export default function SurveyForm() {
       link.click()
     } catch (error) {
       console.error("이미지 저장 중 오류 발생:", error)
-      alert("이미지 저장에 실패했습니다. 다시 시도해주세요.")
+      alert(
+        "이미지 저장 중 오류가 발생했습니다. \n앱 내 브라우저에서는 작동하지 않을 수 있습니다. \n일반 브라우저(Chrome, Safari 등)에서 다시 시도하거나 직접 화면을 캡처해주세요.",
+      )
     }
   }
 
@@ -283,38 +285,62 @@ export default function SurveyForm() {
   const shareResult = async () => {
     if (!resultCardRef.current) return
 
+    let canvas: HTMLCanvasElement | null = null;
     try {
-      const canvas = await html2canvas(resultCardRef.current, {
+      canvas = await html2canvas(resultCardRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
         logging: false,
         useCORS: true,
       })
+    } catch (error) {
+      console.error("이미지 캡처 중 오류 발생 (for sharing):", error);
+      alert(
+        "결과 이미지를 만드는 중 오류가 발생했습니다. \n앱 내 브라우저에서는 작동하지 않을 수 있습니다. \n다른 브라우저를 사용하거나 직접 화면을 캡처하여 공유해주세요."
+      );
+      return; // Stop execution if canvas creation failed
+    }
 
+    if (!canvas) {
+      alert("결과 이미지를 만들지 못했습니다. 다시 시도해주세요.");
+      return;
+    }
+
+    try {
       // 캔버스를 Blob으로 변환
       canvas.toBlob(async (blob) => {
-        if (!blob) return
+        if (!blob) {
+          alert("이미지 변환에 실패했습니다. 다시 시도해주세요.")
+          return
+        }
 
-        // 공유 API가 지원되는지 확인
-        if (navigator.share) {
+        // Web Share API 지원 확인
+        if (navigator.share && navigator.canShare({ files: [new File([blob], "result.png", { type: "image/png" })] })) {
           try {
-            const file = new File([blob], `jakbu-${nickname}-result.png`, { type: "image/png" })
             await navigator.share({
-              title: "Jakbu 설문 결과",
-              text: `${nickname}님의 설문조사 결과를 확인해보세요!`,
-              files: [file],
+              title: `${nickname}님의 Jakbu 설문 결과`,
+              text: "나의 작심삼일 유형 테스트 결과를 확인해보세요!",
+              files: [new File([blob], `jakbu-${nickname}-result.png`, { type: "image/png" })],
             })
-          } catch (error) {
-            console.error("공유 중 오류 발생:", error)
-            // 공유 취소 시 조용히 실패
+          } catch (shareError) {
+            console.error("공유 중 오류 발생:", shareError)
+            // 사용자가 공유를 취소한 경우 등은 오류 메시지를 띄우지 않을 수 있음
+            if ((shareError as Error).name !== 'AbortError') {
+              alert("결과 공유에 실패했습니다.")
+            }
           }
         } else {
-          // 공유 API를 지원하지 않는 경우 다운로드로 대체
-          saveResultAsImage()
+          // 공유 API를 지원하지 않거나 파일을 공유할 수 없는 경우
+          alert(
+            "사용 중인 브라우저/앱에서 이미지 공유를 지원하지 않습니다. \n이미지를 먼저 저장한 후 직접 공유해주세요.",
+          )
+          // 선택적으로 저장 함수 호출
+          // saveResultAsImage(); 
         }
       }, "image/png")
     } catch (error) {
-      console.error("이미지 생성 중 오류 발생:", error)
+      console.error("공유 준비 중 오류 발생:", error)
+      alert("공유 준비 중 오류가 발생했습니다. 다시 시도해주세요.")
     }
   }
 
