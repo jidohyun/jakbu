@@ -132,7 +132,7 @@ export default function ConfettiAnimation({ duration = 3000, onComplete }: Confe
           className="text-center font-bold text-pink-600 transition-all duration-300"
           style={{
             transform: `scale(${scale})`,
-            fontSize: "min(8vw, 3rem)",
+            fontSize: "min(6vw, 2rem)",
             textShadow: "0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 105, 180, 0.6)",
             opacity: scale < 0.5 ? scale * 2 : 1,
           }}
