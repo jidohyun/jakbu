@@ -16,17 +16,23 @@ import html2canvas from "html2canvas"
 const surveyQuestions = [
   {
     id: 1,
-    question: "💭 1. 새로운 루틴을 시작할 때 나는…",
-    options: ["A. 계획부터 완벽히 세운다", "B. 일단 시작하고 본다", "C. 친구가 하자고 해야 시작한다"],
+    question: "🍌 1. 만약 갑자기 아침에 일어났는데 퉁퉁퉁퉁 사후르가 되어있었다면?",
+    image: "/tungtung.png?height=50&width=100",
+    options: ["A. 거울을 보면서 ‘와 퉁퉁퉁퉁 사후르다' 감탄한다", "B. ‘방망이를 휘둘러볼까?’ 고민한다.", "C. ‘이건 꿈이야..!’ 다시 잠든다."],
   },
   {
     id: 2,
-    question: "⏰ 2. 하루 중 루틴 실천 시간을 정할 때는?",
-    options: ["A. 구체적으로 시간을 정해두는 편이다", "B. ‘그때 여유 있으면 하지 뭐’", "C. 아예 하루 중에 끼워넣을 생각을 안 한다"],
+    question: "💭 2. 새로운 루틴을 시작할 때 나는…",
+    options: ["A. 계획부터 완벽히 세운다", "B. 일단 시작하고 본다", "C. 친구가 하자고 해야 시작한다"],
   },
   {
     id: 3,
-    question: "🧨 3. 루틴을 실패했을 때 가장 먼저 드는 생각은?",
+    question: "⏰ 3. 하루 중 루틴 실천 시간을 정할 때는?",
+    options: ["A. 구체적으로 시간을 정해두는 편이다", "B. ‘그때 여유 있으면 하지 뭐’", "C. 아예 하루 중에 끼워넣을 생각을 안 한다"],
+  },
+  {
+    id: 4,
+    question: "🧨 4. 루틴을 실패했을 때 가장 먼저 드는 생각은?",
     options: [
       "A. 또 실패야… 나 진짜 왜 이럴까",
       "B. 뭐, 내일 하면 되지",
@@ -34,8 +40,8 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 4,
-    question: "🧠 4. 내가 정한 목표는 실제로…",
+    id: 5,
+    question: "🧠 5. 내가 정한 목표는 실제로…",
     options: [
       "A. 현실적이고 가능한 편이다",
       "B. 약간 무리지만 해볼 만하다",
@@ -43,8 +49,8 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 5,
-    question: "🌪 5. 주변 환경이 루틴 유지에…",
+    id: 6,
+    question: "🌪 6. 주변 환경이 루틴 유지에…",
     options: [
       "A. 크게 영향을 준다 (바쁘면 바로 무너짐)",
       "B. 조금 영향을 받는 편이다",
@@ -52,8 +58,8 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 6,
-    question: "🎯 6. 루틴을 지키는 가장 큰 이유는?",
+    id: 7,
+    question: "🎯 7. 루틴을 지키는 가장 큰 이유는?",
     options: [
       "A. 나 자신과의 약속이니까",
       "B. 성과나 결과가 눈에 보여야 하니까",
@@ -61,8 +67,8 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 7,
-    question: "🧩 7. 루틴을 만들 때 가장 어려운 건?",
+    id: 8,
+    question: "🧩 8. 루틴을 만들 때 가장 어려운 건?",
     options: [
       "A. 시작하기",
       "B. 유지하기",
@@ -70,8 +76,8 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 8,
-    question: "🕹 8. 루틴을 지키기 위해 어떤 도구를 써봤나?",
+    id: 9,
+    question: "🕹 9. 루틴을 지키기 위해 어떤 도구를 써봤나?",
     options: [
       "A. 앱이나 플래너, 캘린더 등",
       "B. 메모장이나 입으로 다짐",
@@ -79,8 +85,8 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 9,
-    question: "🧍 9. 나는 루틴을 할 때 혼자 하는 게…",
+    id: 10,
+    question: "🧍 10. 나는 루틴을 할 때 혼자 하는 게…",
     options: [
       "A. 편하다",
       "B. 조금 지루하다",
@@ -88,20 +94,14 @@ const surveyQuestions = [
     ],
   },
   {
-    id: 10,
-    question: "🔄 10. 내가 루틴을 반복하는 이유는…",
+    id: 11,
+    question: "🔄 11. 내가 루틴을 반복하는 이유는…",
     options: [
       "A. 지금의 나를 바꾸고 싶어서",
       "B. 뭔가를 이루고 싶은 목표가 있어서",
       "C. 그냥 요즘 사람들이 다 하길래 나도",
     ],
-  },
-  {
-    id: 11,
-    question: "🍌 만약 갑자기 아침에 일어났는데 퉁퉁퉁퉁 사후르가 되어있었다면?",
-    image: "/tungtung.png?height=50&width=100",
-    options: ["A. 거울을 보면서 ‘와 퉁퉁퉁퉁 사후르다' 감탄한다", "B. ‘방망이를 휘둘러볼까?’ 고민한다.", "C. ‘이건 꿈이야..!’ 다시 잠든다."],
-  },
+  }
 ]
 
 // Define interface for result data
